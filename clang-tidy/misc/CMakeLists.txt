@@ -1,6 +1,7 @@
 set(LLVM_LINK_COMPONENTS support)
 
 add_clang_library(clangTidyMiscModule
+  CommaInSubscriptOperatorCheck.cpp
   MisplacedConstCheck.cpp
   UnconventionalAssignOperatorCheck.cpp
   DefinitionsInHeadersCheck.cpp

@@ -10,6 +10,7 @@
 #include "../ClangTidy.h"
 #include "../ClangTidyModule.h"
 #include "../ClangTidyModuleRegistry.h"
+#include "CommaInSubscriptOperatorCheck.h"
 #include "DefinitionsInHeadersCheck.h"
 #include "MisplacedConstCheck.h"
 #include "NewDeleteOverloadsCheck.h"
@@ -30,6 +31,8 @@ namespace misc {
 class MiscModule : public ClangTidyModule {
 public:
   void addCheckFactories(ClangTidyCheckFactories &CheckFactories) override {
+    CheckFactories.registerCheck<CommaInSubscriptOperatorCheck>(
+        "misc-comma-in-subscript-operator");
     CheckFactories.registerCheck<MisplacedConstCheck>("misc-misplaced-const");
     CheckFactories.registerCheck<UnconventionalAssignOperatorCheck>(
         "misc-unconventional-assign-operator");
