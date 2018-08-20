@@ -18,25 +18,21 @@ namespace tidy {
 namespace misc {
 
 void CommaInSubscriptOperatorCheck::registerMatchers(MatchFinder *Finder) {
-  // FIXME: Add matchers.
-    Finder->addMatcher(
-                arraySubscriptExpr(
-                    has(binaryOperator(hasOperatorName(",")).bind("expr"))
-                    ).bind("op")
-
-                , this
-                );
+  Finder->addMatcher(stmt(has(binaryOperator(hasOperatorName(",")))).bind("op"),
+                     this);
 }
 
-void CommaInSubscriptOperatorCheck::check(const MatchFinder::MatchResult &Result) {
-  // FIXME: Add callback implementation.
-  const ArraySubscriptExpr* op = Result.Nodes.getNodeAs<clang::ArraySubscriptExpr>("op");
+void CommaInSubscriptOperatorCheck::check(
+    const MatchFinder::MatchResult &Result) {
+  const Stmt *op = Result.Nodes.getNodeAs<clang::Stmt>("op");
 
-  SourceRange range(op->getLocStart(),
-                             op->getLocEnd());
-  StringRef text = Lexer::getSourceText(CharSourceRange::getTokenRange(range), *Result.SourceManager,
+  SourceRange range(op->getLocStart(), op->getLocEnd());
+  StringRef text = Lexer::getSourceText(CharSourceRange::getTokenRange(range),
+                                        *Result.SourceManager,
                                         Result.Context->getLangOpts());
-  diag(op->getLocStart(), "comma in %0") <<  text;
+  diag(op->getLocStart(),
+       "comma expression in " + std::string(op->getStmtClassName()))
+      << text;
 }
 
 } // namespace misc
